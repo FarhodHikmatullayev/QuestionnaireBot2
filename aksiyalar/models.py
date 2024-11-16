@@ -22,3 +22,18 @@ class User(models.Model):
 
     def __str__(self):
         return self.full_name
+
+
+class Channels(models.Model):
+    title = models.CharField(max_length=500, null=True, blank=True, verbose_name="Nomi")
+    chat_id = models.CharField(max_length=221, null=True, blank=True, verbose_name="Chat ID")
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True, verbose_name="Qo'shilgan vaqti")
+
+    class Meta:
+        verbose_name = 'Channel'
+        verbose_name_plural = 'Kanallar'
+        db_table = 'channel'
+
+    def __str__(self):
+        return self.title
+

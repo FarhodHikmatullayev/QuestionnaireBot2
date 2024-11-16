@@ -7,7 +7,6 @@ env.read_env()
 # .env fayl ichidan quyidagilarni o'qiymiz
 BOT_TOKEN = env.str("BOT_TOKEN")  # Bot toekn
 ADMINS = env.list("ADMINS")  # adminlar ro'yxati
-GROUP_CHAT_ID = env.str("GROUP_CHAT_ID")
 
 DEVELOPMENT_MODE = env.str("DEVELOPMENT_MODE", "False") == "True"
 if DEVELOPMENT_MODE:

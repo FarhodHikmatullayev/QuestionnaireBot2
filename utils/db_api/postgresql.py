@@ -94,3 +94,8 @@ class Database:
     async def delete_user(self, user_id):
         sql = "DELETE FROM users WHERE id = $1 RETURNING *"
         return await self.execute(sql, user_id, fetchrow=True)
+
+    # for channels
+    async def select_all_channels(self):
+        sql = "SELECT * FROM channel"
+        return await self.execute(sql, fetch=True)
