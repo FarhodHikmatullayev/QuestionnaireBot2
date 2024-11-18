@@ -105,12 +105,27 @@ class Database:
         sql = "SELECT * FROM stock"
         return await self.execute(sql, fetch=True)
 
+    async def select_stock(self, stock_id):
+        sql = "SELECT * FROM stock WHERE id = $1"
+        return await self.execute(sql, stock_id, fetchrow=True)
+
     # for promo codes
-    async def create_promo_code(self, user_id, code):
+    async def create_promo_code(self, user_id, code, stock_id):
         created_at = datetime.now()
-        sql = "INSERT INTO promocode (user_id, code, created_at) VALUES($1, $2, $3) RETURNING *"
-        return await self.execute(sql, user_id, code, created_at, fetchrow=True)
+        is_active = True
+        sql = "INSERT INTO promocode (user_id, code, stock_id, is_active, created_at) VALUES($1, $2, $3, $4, $5) RETURNING *"
+        return await self.execute(sql, user_id, code, stock_id, is_active, created_at, fetchrow=True)
 
     async def select_promo_code(self, code):
         sql = "SELECT * FROM promocode WHERE code = $1"
         return await self.execute(sql, code, fetchrow=True)
+
+    async def update_promo_code(self, promo_code_id, **kwargs):
+        set_clause = ", ".join([f"{key} = ${i + 1}" for i, key in enumerate(kwargs.keys())])
+        sql = f"UPDATE promocode SET {set_clause} WHERE id = ${len(kwargs) + 1} RETURNING *"
+        return await self.execute(sql, *kwargs.values(), promo_code_id, fetchrow=True)
+
+    async def select_promo_codes(self, **kwargs):
+        sql = "SELECT * FROM promocode WHERE "
+        sql, parameters = self.format_args(sql, parameters=kwargs)
+        return await self.execute(sql, *parameters, fetch=True)

@@ -56,8 +56,9 @@ class Stock(models.Model):
 
 class PromoCode(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, verbose_name="Foydalanuvchi")
+    stock = models.ForeignKey(Stock, on_delete=models.CASCADE, null=True, blank=True, verbose_name="Aksiya")
     code = models.CharField(max_length=221, null=True, blank=True, verbose_name="Promo kod")
-    is_active = models.CharField(default=True, null=True, blank=True, verbose_name="Aktivlik holati")
+    is_active = models.BooleanField(default=True, null=True, blank=True, verbose_name="Aktivlik holati")
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True, verbose_name="Yaratilgan vaqti")
 
     class Meta:
@@ -66,4 +67,4 @@ class PromoCode(models.Model):
         db_table = 'promocode'
 
     def __str__(self):
-        return self.user
+        return f"{self.user}"

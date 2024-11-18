@@ -29,11 +29,11 @@ class CheckSubscriptionMiddleware(BaseMiddleware):
             created_at = stock['created_at'].date() + timedelta(days=3)
             today = datetime.now().date()
             if created_at >= today:
-                result = f"Assalomu alaykum! Haftaning maxsus taklifi: {stock['title']} uchun {stocks['stock_percent']}% chegirma. Promo-kod olish uchun sahifalarimizga obuna bo‘ling!"
+                result = f"Assalomu alaykum! Haftaning maxsus taklifi: {stock['title']} uchun {stock['stock_percent']}% chegirma. Promo-kod olish uchun sahifalarimizga obuna bo‘ling!"
             else:
                 result = f"1"
         else:
-            result = "2"
+            result = f"2"
 
         final_status = True
         channels = await db.select_all_channels()

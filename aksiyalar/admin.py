@@ -16,3 +16,19 @@ class ChannelsAdmin(admin.ModelAdmin):
     list_filter = ('created_at',)
     search_fields = ('title',)
     date_hierarchy = 'created_at'
+
+
+@admin.register(Stock)
+class StockAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title', 'stock_percent', 'price', 'created_at')
+    list_filter = ('created_at',)
+    search_fields = ('title',)
+    date_hierarchy = 'created_at'
+
+
+@admin.register(PromoCode)
+class PromoCodeAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'stock', 'code', 'is_active', 'created_at')
+    list_filter = ('created_at', 'is_active')
+    search_fields = ('user__full_name', 'code',)
+    date_hierarchy = 'created_at'

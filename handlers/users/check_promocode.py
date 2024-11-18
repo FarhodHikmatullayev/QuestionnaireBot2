@@ -1,5 +1,8 @@
+from datetime import timedelta, datetime
+
 from aiogram import types
 from aiogram.dispatcher import FSMContext
+from setuptools.msvc import msvc14_get_vc_env
 
 from loader import dp, db
 
@@ -24,3 +27,31 @@ async def check_promocode(message: types.Message, state: FSMContext):
 
     else:
         user = users[0]
+    user_role = user['role']
+    if user_role != 'admin':
+        return
+
+    promocode = await db.select_promo_code(code=code)
+    if not promocode:
+        await message.answer(text="🚫 Promo kod topilmadi")
+        return
+    is_active = promocode['is_active']
+    stock_id = promocode['stock_id']
+    stock = await db.select_stock(stock_id=stock_id)
+    if not stock:
+        await message.answer(text=" Promo kod topilmadi")
+        return
+    if not is_active:
+        await message.answer(text="Ilgari foydalanilgan")
+        return
+
+
+    created_at = stock['created_at'].date() + timedelta(days=3)
+    today = datetime.now().date()
+    if created_at < today:
+        await message.answer(text="Promocod muddati o'tgan")
+        return
+
+    await message.answer(text="Promocod muvaffaqiyatli ro'yxatga olindi")
+    await db.update_promo_code(promo_code_id=promocode['id'], is_active=False)
+
