@@ -1,8 +1,11 @@
 import logging
+from datetime import datetime, timedelta
+
 from aiogram import types
 from aiogram.dispatcher.handler import CancelHandler
 from aiogram.dispatcher.middlewares import BaseMiddleware
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from django.db.models.expressions import result
 
 from utils.misc import subscription
 from loader import bot, db
@@ -20,8 +23,18 @@ class CheckSubscriptionMiddleware(BaseMiddleware):
         #         return
         # else:
         #     return
+        stocks = await db.select_all_stocks()
+        if stocks:
+            stock = stocks[-1]
+            created_at = stock['created_at'].date() + timedelta(days=3)
+            today = datetime.now().date()
+            if created_at >= today:
+                result = f"Assalomu alaykum! Haftaning maxsus taklifi: {stock['title']} uchun {stocks['stock_percent']}% chegirma. Promo-kod olish uchun sahifalarimizga obuna bo‘ling!"
+            else:
+                result = f"1"
+        else:
+            result = "2"
 
-        result = f"Assalomu alaykum! Haftaning maxsus taklifi: {} uchun {}% chegirma. Promo-kod olish uchun sahifalarimizga obuna bo‘ling!"
         final_status = True
         channels = await db.select_all_channels()
         inline_keyboard = InlineKeyboardMarkup(row_width=1)

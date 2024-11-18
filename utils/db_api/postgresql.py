@@ -99,3 +99,18 @@ class Database:
     async def select_all_channels(self):
         sql = "SELECT * FROM channel"
         return await self.execute(sql, fetch=True)
+
+    # for stocks
+    async def select_all_stocks(self):
+        sql = "SELECT * FROM stock"
+        return await self.execute(sql, fetch=True)
+
+    # for promo codes
+    async def create_promo_code(self, user_id, code):
+        created_at = datetime.now()
+        sql = "INSERT INTO promocode (user_id, code, created_at) VALUES($1, $2, $3) RETURNING *"
+        return await self.execute(sql, user_id, code, created_at, fetchrow=True)
+
+    async def select_promo_code(self, code):
+        sql = "SELECT * FROM promocode WHERE code = $1"
+        return await self.execute(sql, code, fetchrow=True)

@@ -37,3 +37,33 @@ class Channels(models.Model):
     def __str__(self):
         return self.title
 
+
+class Stock(models.Model):
+    title = models.CharField(max_length=221, null=True, blank=True, verbose_name="Nomi")
+    image = models.ImageField(upload_to='stocks/', null=True, blank=True, verbose_name='Rasmi')
+    stock_percent = models.IntegerField(null=True, blank=True, verbose_name="Chegirma foizi")
+    price = models.IntegerField(null=True, blank=True, verbose_name="Narx")
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True, verbose_name="Yaratilgan vaqti")
+
+    class Meta:
+        verbose_name = 'Stock'
+        verbose_name_plural = "Aksiyalar"
+        db_table = 'stock'
+
+    def __str__(self):
+        return self.title
+
+
+class PromoCode(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, verbose_name="Foydalanuvchi")
+    code = models.CharField(max_length=221, null=True, blank=True, verbose_name="Promo kod")
+    is_active = models.CharField(default=True, null=True, blank=True, verbose_name="Aktivlik holati")
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True, verbose_name="Yaratilgan vaqti")
+
+    class Meta:
+        verbose_name = 'PromoCode'
+        verbose_name_plural = "Promo Kodlar"
+        db_table = 'promocode'
+
+    def __str__(self):
+        return self.user
