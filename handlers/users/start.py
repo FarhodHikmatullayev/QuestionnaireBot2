@@ -27,8 +27,8 @@ async def bot_start(message: types.Message, state: FSMContext):
         user = users[0]
         role = user['role']
     if role == 'admin':
-        await message.answer(f"👋 Salom, Promo kodni olish uchun '🏷️ PromoCode' tugmasini bosing!",
+        await message.answer(text=f"👋 Salom, Promo kodni olish uchun '🏷️ PromoCode' tugmasini bosing!",
                              reply_markup=main_menu_for_users)
     else:
-        await message.answer(f"👋 Salom, Promo kodni tekshirish uchun '🔑 PromoCodni tekshirish' tugmasini bosing!",
+        await message.answer(text=f"👋 Salom, Promo kodni tekshirish uchun promo kodni yuboring",
                              reply_markup=main_menu_for_admins)
