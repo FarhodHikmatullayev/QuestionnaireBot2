@@ -100,6 +100,11 @@ class Database:
         sql = "SELECT * FROM channel"
         return await self.execute(sql, fetch=True)
 
+    # for web pages
+    async def select_all_web_pages(self):
+        sql = "SELECT * FROM web_page"
+        return await self.execute(sql, fetch=True)
+
     # for stocks
     async def select_all_stocks(self):
         sql = "SELECT * FROM stock"

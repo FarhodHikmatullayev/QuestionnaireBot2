@@ -38,6 +38,20 @@ class Channels(models.Model):
         return self.title
 
 
+class WebPages(models.Model):
+    title = models.CharField(max_length=500, null=True, blank=True, verbose_name="Nomi")
+    link = models.CharField(max_length=500, null=True, blank=True, verbose_name="Link")
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True, verbose_name="Qo'shilgan vaqti")
+
+    class Meta:
+        verbose_name = 'WebPage'
+        verbose_name_plural = 'Web sahifalar'
+        db_table = 'web_page'
+
+    def __str__(self):
+        return self.title
+
+
 class Stock(models.Model):
     title = models.CharField(max_length=221, null=True, blank=True, verbose_name="Nomi")
     image = models.ImageField(upload_to='stocks/', null=True, blank=True, verbose_name='Rasmi')

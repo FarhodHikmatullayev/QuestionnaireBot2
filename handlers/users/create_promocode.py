@@ -37,18 +37,23 @@ async def create_promocode(message: types.Message, state: FSMContext):
 
     stocks = await db.select_all_stocks()
     if not stocks:
-        await message.answer(text="Aksiya mavjud emas")
+        await message.answer(text="🔴 *Hozirda aksiyalar mavjud emas*\n"
+                                  "Iltimos, keyinroq qayta urinib ko'ring.", parse_mode='Markdown')
         return
     stock = stocks[-1]
     created_at = stock['created_at'].date() + timedelta(days=3)
     today = datetime.now().date()
     if created_at < today:
-        await message.answer(text="Aksiya mavjud emas")
+        await message.answer(text="🔴 *Hozirda aksiyalar mavjud emas*\n"
+                                  "Iltimos, keyinroq qayta urinib ko'ring.", parse_mode='Markdown')
         return
 
     promocodes = await db.select_promo_codes(user_id=user_id, stock_id=stock['id'])
     if promocodes:
-        await message.answer(text="Sizda hozirgi aksiya uchun promocode mavjud")
+        code = promocodes[0]['code']
+        await message.answer(text=f"🎉 *Sizda hozirgi aksiya uchun promocode mavjud!*\n"
+                                  f"📅 Iltimos, quyidagi kodni quydagi joyda ishlating: `{code}`\n"
+                                  f"👉 Aksiyalardan foydalanishni unutmang!", parse_mode='Markdown')
         return
 
     promocode = generate_promo_code()
@@ -57,4 +62,7 @@ async def create_promocode(message: types.Message, state: FSMContext):
         promocode = generate_promo_code()
         code = await db.select_promo_code(code=promocode)
     await db.create_promo_code(user_id=user_id, code=promocode, stock_id=stock['id'])
-    await message.answer(text=f"🎉 Sizning promocodingiz: {promocode}")
+    await message.answer(
+        text=f"🎉 *Sizning promocodingiz:* ` {promocode} `\n"
+             "💡 Iltimos, ushbu kodni aksiyalarda ishlating va chegirmalardan foydalaning!\n", parse_mode='Markdown'
+    )
