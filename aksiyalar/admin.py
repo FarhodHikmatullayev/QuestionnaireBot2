@@ -17,6 +17,13 @@ class ChannelsAdmin(admin.ModelAdmin):
     search_fields = ('title',)
     date_hierarchy = 'created_at'
 
+@admin.register(WebPages)
+class WebPagesAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title', 'link', 'created_at')
+    list_filter = ('created_at',)
+    search_fields = ('title',)
+    date_hierarchy = 'created_at'
+
 
 @admin.register(Stock)
 class StockAdmin(admin.ModelAdmin):

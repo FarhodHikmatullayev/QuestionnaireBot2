@@ -50,7 +50,7 @@ class CheckSubscriptionMiddleware(BaseMiddleware):
         web_pages = await db.select_all_web_pages()
         for web_page in web_pages:
             invite_link = web_page['link']
-            button = InlineKeyboardButton(text=web_page.title, url=invite_link)
+            button = InlineKeyboardButton(text=web_page['title'], url=invite_link)
             inline_keyboard.add(button)
 
 
