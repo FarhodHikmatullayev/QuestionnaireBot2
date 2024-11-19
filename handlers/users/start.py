@@ -3,7 +3,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.builtin import CommandStart
 
 from keyboards.default.main_menu import main_menu_for_users, main_menu_for_admins
-from loader import dp, db
+from loader import dp, db, bot
 
 
 @dp.message_handler(CommandStart(), state="*")
@@ -26,7 +26,13 @@ async def bot_start(message: types.Message, state: FSMContext):
     else:
         user = users[0]
         role = user['role']
-    if role == 'admin':
+    stocks = await db.select_all_stocks()
+    if stocks:
+        stock = stocks[-1]
+        message_id = stock['message_id']
+        from_chat_id = stock['from_chat_id']
+        await bot.forward_message(chat_id=message.from_user.id, from_chat_id=from_chat_id, message_id=message_id)
+    if role == 'user':
         await message.answer(text=f"👋 Salom, Promo kodni olish uchun '🏷️ PromoCode' tugmasini bosing!",
                              reply_markup=main_menu_for_users)
     else:

@@ -17,6 +17,7 @@ class ChannelsAdmin(admin.ModelAdmin):
     search_fields = ('title',)
     date_hierarchy = 'created_at'
 
+
 @admin.register(WebPages)
 class WebPagesAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'link', 'created_at')
@@ -27,9 +28,9 @@ class WebPagesAdmin(admin.ModelAdmin):
 
 @admin.register(Stock)
 class StockAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'stock_percent', 'price', 'created_at')
+    list_display = ('id', 'from_chat_id', 'message_id', 'created_at')
     list_filter = ('created_at',)
-    search_fields = ('title',)
+    search_fields = ('from_chat_id', 'message_id')
     date_hierarchy = 'created_at'
 
 

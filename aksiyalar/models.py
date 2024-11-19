@@ -53,10 +53,12 @@ class WebPages(models.Model):
 
 
 class Stock(models.Model):
-    title = models.CharField(max_length=221, null=True, blank=True, verbose_name="Nomi")
-    image = models.ImageField(upload_to='stocks/', null=True, blank=True, verbose_name='Rasmi')
-    stock_percent = models.IntegerField(null=True, blank=True, verbose_name="Chegirma foizi")
-    price = models.IntegerField(null=True, blank=True, verbose_name="Narx")
+    # title = models.CharField(max_length=221, null=True, blank=True, verbose_name="Nomi")
+    # image = models.ImageField(upload_to='stocks/', null=True, blank=True, verbose_name='Rasmi')
+    # stock_percent = models.IntegerField(null=True, blank=True, verbose_name="Chegirma foizi")
+    # price = models.IntegerField(null=True, blank=True, verbose_name="Narx")
+    from_chat_id = models.BigIntegerField(null=True, blank=True, verbose_name='from chat id')
+    message_id = models.BigIntegerField(null=True, blank=True, verbose_name='message id')
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True, verbose_name="Yaratilgan vaqti")
 
     class Meta:
@@ -65,7 +67,7 @@ class Stock(models.Model):
         db_table = 'stock'
 
     def __str__(self):
-        return self.title
+        return f"{self.created_at}"
 
 
 class PromoCode(models.Model):

@@ -15,5 +15,8 @@ main_menu_for_admins = ReplyKeyboardMarkup(
         [
             KeyboardButton(text="🏷️ PromoCode"),
         ],
+        [
+            KeyboardButton(text="🆕 Yangi aksiya yaratish")
+        ]
     ]
 )

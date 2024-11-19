@@ -114,6 +114,11 @@ class Database:
         sql = "SELECT * FROM stock WHERE id = $1"
         return await self.execute(sql, stock_id, fetchrow=True)
 
+    async def create_stock(self, from_chat_id, message_id):
+        created_at = datetime.now()
+        sql = "INSERT INTO stock (from_chat_id, message_id, created_at) VALUES($1, $2, $3) RETURNING *"
+        return await self.execute(sql, from_chat_id, message_id, created_at, fetchrow=True)
+
     # for promo codes
     async def create_promo_code(self, user_id, code, stock_id):
         created_at = datetime.now()

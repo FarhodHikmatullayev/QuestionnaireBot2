@@ -17,21 +17,8 @@ class CheckSubscriptionMiddleware(BaseMiddleware):
         elif update.callback_query:
             user = update.callback_query.from_user.id
 
-        stocks = await db.select_all_stocks()
-        if stocks:
-            stock = stocks[-1]
-            created_at = stock['created_at'].date() + timedelta(days=3)
-            today = datetime.now().date()
-            if created_at >= today:
-                result = f"✨ Assalomu alaykum! 🎉\n" \
-                         f"🛍️ Haftaning maxsus taklifi: *{stock['title']}* uchun *{stock['stock_percent']}%* chegirma! 🎈\n" \
-                         "📩 Promo-kod olish uchun sahifalarimizga obuna bo‘ling va yangiliklardan xabardor bo‘ling!"
-            else:
-                result = f"✨ Assalomu alaykum! 🎉\n" \
-                         f"📩 Promo-kod olish uchun sahifalarimizga obuna bo‘ling va yangiliklardan xabardor bo‘ling!"
-        else:
-            result = f"✨ Assalomu alaykum! 🎉\n" \
-                     f"📩 Promo-kod olish uchun sahifalarimizga obuna bo‘ling va yangiliklardan xabardor bo‘ling!"
+        result = f"✨ Assalomu alaykum! 🎉\n" \
+                 f"📩 Promo-kod olish uchun sahifalarimizga obuna bo‘ling va yangiliklardan xabardor bo‘ling!"
         final_status = True
         channels = await db.select_all_channels()
         inline_keyboard = InlineKeyboardMarkup(row_width=1)
