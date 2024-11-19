@@ -3,6 +3,7 @@ from aiogram.dispatcher import FSMContext
 from pyexpat.errors import messages
 
 from keyboards.inline.confirmation import confirm_keyboard
+from keyboards.inline.promocode import get_promo_code_inline_button
 from loader import dp, bot, db
 from states.stocks import CreateStockState
 
@@ -42,11 +43,16 @@ async def cancel_saving_stock(call: types.CallbackQuery, state: FSMContext):
 
 @dp.callback_query_handler(state=CreateStockState.from_chat_id, text='yes')
 async def confirm_saving_stock(call: types.CallbackQuery, state: FSMContext):
+    users = await db.select_all_users()
     data = await state.get_data()
     from_chat_id = data.get('from_chat_id')
     message_id = data.get('message_id')
     await db.create_stock(from_chat_id=from_chat_id, message_id=message_id)
     await call.message.answer(text="Yaratildi")
+
+    for user in users:
+        await bot.forward_message(chat_id=user['telegram_id'], from_chat_id=from_chat_id, message_id=message_id)
+
     await bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
     await state.finish()
 
@@ -59,7 +65,6 @@ async def start_confirmation_function(message: types.Message, state: FSMContext)
         from_chat_id=from_chat_id,
         message_id=message_id
     )
-    print(1)
     data = await state.get_data()
     from_chat_id = data.get('from_chat_id')
     message_id = data.get('message_id')
