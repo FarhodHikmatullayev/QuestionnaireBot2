@@ -16,7 +16,9 @@ class CheckSubscriptionMiddleware(BaseMiddleware):
             user = update.message.from_user.id
         elif update.callback_query:
             user = update.callback_query.from_user.id
-        else:  # Foydalanuvchi ID aniqlanmagan holatda, xato yuz bermasligi uchun qaytarib yuborish raise CancelHandler()
+        else:
+            # Foydalanuvchi ID aniqlanmagan holatda, xato yuz bermasligi uchun qaytarib yuborish
+            raise CancelHandler()
 
         result = f"✨ Assalomu alaykum! 🎉\n" \
                  f"📩 So'rovnomada ishtirok etish uchun sahifalarimizga obuna bo‘ling"
