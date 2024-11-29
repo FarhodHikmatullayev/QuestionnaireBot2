@@ -16,6 +16,7 @@ class CheckSubscriptionMiddleware(BaseMiddleware):
             user = update.message.from_user.id
         elif update.callback_query:
             user = update.callback_query.from_user.id
+        else:  # Foydalanuvchi ID aniqlanmagan holatda, xato yuz bermasligi uchun qaytarib yuborish raise CancelHandler()
 
         result = f"✨ Assalomu alaykum! 🎉\n" \
                  f"📩 So'rovnomada ishtirok etish uchun sahifalarimizga obuna bo‘ling"
@@ -34,8 +35,8 @@ class CheckSubscriptionMiddleware(BaseMiddleware):
                 button = InlineKeyboardButton(text=channel.title, url=invite_link)
                 inline_keyboard.add(button)
                 # result += (f"👉 <a href='{invite_link}'>{channel.title}</a>\n")
-            button = InlineKeyboardButton(text="Obunani tekshirish", callback_data='check')
-            inline_keyboard.add(button)
+        button = InlineKeyboardButton(text="Obunani tekshirish", callback_data='check')
+        inline_keyboard.add(button)
 
         if not final_status:
             await update.message.answer(result, reply_markup=inline_keyboard, disable_web_page_preview=True)
