@@ -100,42 +100,21 @@ class Database:
         sql = "SELECT * FROM channel"
         return await self.execute(sql, fetch=True)
 
-    # for web pages
-    async def select_all_web_pages(self):
-        sql = "SELECT * FROM web_page"
+    # for questionnaires
+    async def select_questionnaire(self, rank_id):
+        sql = "SELECT * FROM questionnaire WHERE id = $1"
+        return await self.execute(sql, rank_id, fetchrow=True)
+
+    async def select_all_questionnaires(self):
+        sql = "SELECT * FROM questionnaire"
         return await self.execute(sql, fetch=True)
 
-    # for stocks
-    async def select_all_stocks(self):
-        sql = "SELECT * FROM stock"
-        return await self.execute(sql, fetch=True)
-
-    async def select_stock(self, stock_id):
-        sql = "SELECT * FROM stock WHERE id = $1"
-        return await self.execute(sql, stock_id, fetchrow=True)
-
-    async def create_stock(self, from_chat_id, message_id):
-        created_at = datetime.now()
-        sql = "INSERT INTO stock (from_chat_id, message_id, created_at) VALUES($1, $2, $3) RETURNING *"
-        return await self.execute(sql, from_chat_id, message_id, created_at, fetchrow=True)
-
-    # for promo codes
-    async def create_promo_code(self, user_id, code, stock_id):
-        created_at = datetime.now()
-        is_active = True
-        sql = "INSERT INTO promocode (user_id, code, stock_id, is_active, created_at) VALUES($1, $2, $3, $4, $5) RETURNING *"
-        return await self.execute(sql, user_id, code, stock_id, is_active, created_at, fetchrow=True)
-
-    async def select_promo_code(self, code):
-        sql = "SELECT * FROM promocode WHERE code = $1"
-        return await self.execute(sql, code, fetchrow=True)
-
-    async def update_promo_code(self, promo_code_id, **kwargs):
-        set_clause = ", ".join([f"{key} = ${i + 1}" for i, key in enumerate(kwargs.keys())])
-        sql = f"UPDATE promocode SET {set_clause} WHERE id = ${len(kwargs) + 1} RETURNING *"
-        return await self.execute(sql, *kwargs.values(), promo_code_id, fetchrow=True)
-
-    async def select_promo_codes(self, **kwargs):
-        sql = "SELECT * FROM promocode WHERE "
+    async def select_questionnaires(self, **kwargs):
+        sql = "SELECT * FROM questionnaire WHERE "
         sql, parameters = self.format_args(sql, parameters=kwargs)
         return await self.execute(sql, *parameters, fetch=True)
+
+    async def create_questionnaire(self, user_id, kindergarten):
+        created_at = datetime.now()
+        sql = "INSERT INTO questionnaire (user_id, kindergarten, created_at) VALUES($1, $2, $3) RETURNING *"
+        return await self.execute(sql, user_id, kindergarten, created_at, fetchrow=True)

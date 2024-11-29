@@ -38,49 +38,16 @@ class Channels(models.Model):
         return self.title
 
 
-class WebPages(models.Model):
-    title = models.CharField(max_length=500, null=True, blank=True, verbose_name="Nomi")
-    link = models.CharField(max_length=500, null=True, blank=True, verbose_name="Link")
-    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True, verbose_name="Qo'shilgan vaqti")
+class Questionnaire(models.Model):
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Foydalanuvchi")
+    kindergarten = models.CharField(max_length=221, null=True, blank=True, verbose_name="Bog'cha")
+    created_at = models.DateTimeField(default=datetime.datetime.now(), null=True, blank=True,
+                                      verbose_name="Yaratilgan vaqti")
 
     class Meta:
-        verbose_name = 'WebPage'
-        verbose_name_plural = 'Web sahifalar'
-        db_table = 'web_page'
+        db_table = 'questionnaire'
+        verbose_name = "Questionnaire"
+        verbose_name_plural = "Atvetlar"
 
     def __str__(self):
-        return self.title
-
-
-class Stock(models.Model):
-    # title = models.CharField(max_length=221, null=True, blank=True, verbose_name="Nomi")
-    # image = models.ImageField(upload_to='stocks/', null=True, blank=True, verbose_name='Rasmi')
-    # stock_percent = models.IntegerField(null=True, blank=True, verbose_name="Chegirma foizi")
-    # price = models.IntegerField(null=True, blank=True, verbose_name="Narx")
-    from_chat_id = models.BigIntegerField(null=True, blank=True, verbose_name='from chat id')
-    message_id = models.BigIntegerField(null=True, blank=True, verbose_name='message id')
-    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True, verbose_name="Yaratilgan vaqti")
-
-    class Meta:
-        verbose_name = 'Stock'
-        verbose_name_plural = "Aksiyalar"
-        db_table = 'stock'
-
-    def __str__(self):
-        return f"{self.created_at}"
-
-
-class PromoCode(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, verbose_name="Foydalanuvchi")
-    stock = models.ForeignKey(Stock, on_delete=models.CASCADE, null=True, blank=True, verbose_name="Aksiya")
-    code = models.CharField(max_length=221, null=True, blank=True, verbose_name="Promo kod")
-    is_active = models.BooleanField(default=True, null=True, blank=True, verbose_name="Aktivlik holati")
-    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True, verbose_name="Yaratilgan vaqti")
-
-    class Meta:
-        verbose_name = 'PromoCode'
-        verbose_name_plural = "Promo Kodlar"
-        db_table = 'promocode'
-
-    def __str__(self):
-        return f"{self.user}"
+        return f"{self.user.full_name}"

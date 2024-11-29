@@ -18,7 +18,7 @@ class CheckSubscriptionMiddleware(BaseMiddleware):
             user = update.callback_query.from_user.id
 
         result = f"✨ Assalomu alaykum! 🎉\n" \
-                 f"📩 Promo-kod olish uchun sahifalarimizga obuna bo‘ling va yangiliklardan xabardor bo‘ling!"
+                 f"📩 So'rovnomada ishtirok etish uchun sahifalarimizga obuna bo‘ling"
         final_status = True
         channels = await db.select_all_channels()
         inline_keyboard = InlineKeyboardMarkup(row_width=1)
@@ -34,12 +34,8 @@ class CheckSubscriptionMiddleware(BaseMiddleware):
                 button = InlineKeyboardButton(text=channel.title, url=invite_link)
                 inline_keyboard.add(button)
                 # result += (f"👉 <a href='{invite_link}'>{channel.title}</a>\n")
-        web_pages = await db.select_all_web_pages()
-        for web_page in web_pages:
-            invite_link = web_page['link']
-            button = InlineKeyboardButton(text=web_page['title'], url=invite_link)
+            button = InlineKeyboardButton(text="Obunani tekshirish", callback_data='check')
             inline_keyboard.add(button)
-
 
         if not final_status:
             await update.message.answer(result, reply_markup=inline_keyboard, disable_web_page_preview=True)
