@@ -22,5 +22,5 @@ class ChannelsAdmin(admin.ModelAdmin):
 class QuestionnaireAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'kindergarten', "created_at")
     list_filter = ("created_at",)
-    search_fields = ('user__user_name',)
+    search_fields = ('user__full_name', 'kindergarten')
     date_hierarchy = 'created_at'
