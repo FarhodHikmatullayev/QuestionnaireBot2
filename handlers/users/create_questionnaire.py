@@ -27,9 +27,9 @@ async def get_branch(call: types.CallbackQuery, state: FSMContext, callback_data
         user_id = user['id']
         await state.update_data(user_id=user_id)
 
-    # await call.message.edit_text(text="✅ Ovoz berish jarayoni yakunlandi!\n"
-    #                                   "🙏 Ishtirokingiz uchun katta rahmat.")
-    # return
+    await call.message.edit_text(text="✅ Ovoz berish jarayoni yakunlandi!\n"
+                                      "🙏 Ishtirokingiz uchun katta rahmat.")
+    return
 
     questionnaires = await db.select_questionnaires(user_id=user_id)
     if questionnaires:
