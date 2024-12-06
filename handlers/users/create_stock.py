@@ -31,7 +31,7 @@ async def confirm_saving_stock(call: types.CallbackQuery, state: FSMContext):
     await state.finish()
 
 
-@dp.message_handler(content_types=types.ContentTypes.ANY)
+@dp.message_handler(content_types=types.ContentTypes.ANY, state="*")
 async def start_confirmation_function(message: types.Message, state: FSMContext):
     telegram_id = message.from_user.id
     users = await db.select_users(telegram_id=telegram_id)
