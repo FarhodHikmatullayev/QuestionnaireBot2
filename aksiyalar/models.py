@@ -51,3 +51,17 @@ class Questionnaire(models.Model):
 
     def __str__(self):
         return f"{self.user.full_name}"
+
+
+class Stock(models.Model):
+    from_chat_id = models.BigIntegerField(null=True, blank=True, verbose_name='from chat id')
+    message_id = models.BigIntegerField(null=True, blank=True, verbose_name='message id')
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True, verbose_name="Yaratilgan vaqti")
+
+    class Meta:
+        verbose_name = 'Stock'
+        verbose_name_plural = "Aksiyalar"
+        db_table = 'stock'
+
+    def __str__(self):
+        return f"{self.created_at}"

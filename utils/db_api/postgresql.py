@@ -118,3 +118,17 @@ class Database:
         created_at = datetime.now()
         sql = "INSERT INTO questionnaire (user_id, kindergarten, created_at) VALUES($1, $2, $3) RETURNING *"
         return await self.execute(sql, user_id, kindergarten, created_at, fetchrow=True)
+
+    # for stocks
+    async def select_all_stocks(self):
+        sql = "SELECT * FROM stock"
+        return await self.execute(sql, fetch=True)
+
+    async def select_stock(self, stock_id):
+        sql = "SELECT * FROM stock WHERE id = $1"
+        return await self.execute(sql, stock_id, fetchrow=True)
+
+    async def create_stock(self, from_chat_id, message_id):
+        created_at = datetime.now()
+        sql = "INSERT INTO stock (from_chat_id, message_id, created_at) VALUES($1, $2, $3) RETURNING *"
+        return await self.execute(sql, from_chat_id, message_id, created_at, fetchrow=True)

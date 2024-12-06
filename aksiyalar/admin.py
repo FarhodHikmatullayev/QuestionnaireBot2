@@ -24,3 +24,10 @@ class QuestionnaireAdmin(admin.ModelAdmin):
     list_filter = ("created_at", 'kindergarten')
     search_fields = ('user__full_name', 'kindergarten')
     date_hierarchy = 'created_at'
+
+@admin.register(Stock)
+class StockAdmin(admin.ModelAdmin):
+    list_display = ('id', 'from_chat_id', 'message_id', 'created_at')
+    list_filter = ('created_at',)
+    search_fields = ('from_chat_id', 'message_id')
+    date_hierarchy = 'created_at'
