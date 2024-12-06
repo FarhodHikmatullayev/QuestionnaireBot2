@@ -22,7 +22,10 @@ async def confirm_saving_stock(call: types.CallbackQuery, state: FSMContext):
     await call.message.answer(text="✅ Yaratildi")
 
     for user in users:
-        await bot.forward_message(chat_id=user['telegram_id'], from_chat_id=from_chat_id, message_id=message_id)
+        try:
+            await bot.forward_message(chat_id=user['telegram_id'], from_chat_id=from_chat_id, message_id=message_id)
+        except:
+            pass
 
     await bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
     await state.finish()
