@@ -19,15 +19,24 @@ async def confirm_saving_stock(call: types.CallbackQuery, state: FSMContext):
     from_chat_id = data.get('from_chat_id')
     message_id = data.get('message_id')
     await db.create_stock(from_chat_id=from_chat_id, message_id=message_id)
-    await call.message.answer(text="✅ Yaratildi")
+
+    active_users = 0
+    passive_users = 0
+
+    telegram_id = call.from_user.id
 
     for user in users:
+        if user['telegram_id'] == telegram_id:
+            continue
         try:
             await bot.forward_message(chat_id=user['telegram_id'], from_chat_id=from_chat_id, message_id=message_id)
+            active_users += 1
         except:
-            pass
-
-    await bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
+            passive_users += 1
+    text = (
+        f"📢 Reklama umumiy {active_users + passive_users} ta foydalanuvchilardan \n"
+        f"🟢 {active_users} nafar aktiv foydalanuvchilarga muvaffaqiyatli jo'natildi.")
+    await call.message.edit_text(text=text)
     await state.finish()
 
 
