@@ -36,7 +36,8 @@ async def confirm_saving_stock(call: types.CallbackQuery, state: FSMContext):
     text = (
         f"📢 Reklama umumiy {active_users + passive_users} ta foydalanuvchilardan \n"
         f"🟢 {active_users} nafar aktiv foydalanuvchilarga muvaffaqiyatli jo'natildi.")
-    await call.message.edit_text(text=text)
+    await call.message.answer(text=text)
+    await bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
     await state.finish()
 
 
